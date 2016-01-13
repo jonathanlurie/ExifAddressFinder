@@ -94,7 +94,7 @@ class ExifAddressFinder:
         exifWriter.writeExifToFile(newDict, fileAddress)
 
 
-    def addAddressToImage(self, fileAddress, prefix="", sufix="", addToFormer=False):
+    def addAddressToImage(self, fileAddress, prefix="", suffix="", addToFormer=False):
         coordinates = self._getGpsCoordinates(fileAddress)
 
         if(not coordinates):
@@ -107,7 +107,7 @@ class ExifAddressFinder:
             print("\tERROR: The address was impossible to retrieve")
             return None
 
-        self._updateDescription(fileAddress, prefix + postalAddress + sufix, addToFormer)
+        self._updateDescription(fileAddress, prefix + postalAddress + suffix, addToFormer)
 
         return 1
 
@@ -124,7 +124,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument('-files', nargs='+', required=True, help='Image files to process')
     parser.add_argument('-prefix', required=False, default='', help='Text to add before the address')
-    parser.add_argument('-sufix', required=False, default='', help='Text to add after the address')
+    parser.add_argument('-suffix', required=False, default='', help='Text to add after the address')
     parser.add_argument('-replace', action='store_false', required=False, help='Will erase the current description to write only the address')
 
     args = parser.parse_args()
@@ -135,7 +135,7 @@ if __name__ == '__main__':
 
     for f in args.files:
         print os.path.basename(f) + "... (" + str(counter) + "/" +  str(len(args.files)) + ")"
-        if(eaf.addAddressToImage(f, args.prefix, args.sufix, args.replace)):
+        if(eaf.addAddressToImage(f, args.prefix, args.suffix, args.replace)):
             print "\tDONE"
 
         counter = counter + 1
