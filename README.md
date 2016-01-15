@@ -1,6 +1,6 @@
 # ExifAddressFinder
 
-The project **ExifAddressFinder** contains a executable named **find_address**. It adds the postal address in the EXIF Description tag of your geo-tagged pictures.
+The project **ExifAddressFinder** contains a executable named `find_address`. It adds the postal address in the EXIF Description tag of your geo-tagged pictures.
 
 Coded on OSX, supposed to work on other UNIX platforms and possibly on Windows if the right dependencies are installed.
 
@@ -21,18 +21,20 @@ So far, it works only for jpg images. It could also work for Tiff, but this was 
 
 ## Installation
 
-Download the [master](https://github.com/jonathanlurie/ExifAddressFinder/archive/master.zip) and unzip-it somewhere and run:
+Download the [master](https://github.com/jonathanlurie/ExifAddressFinder/archive/master.zip), unzip-it somewhere and run:
 
 ```
 cd ExifAddressFinder
 python setup.py install
 ```
 
+This will install the dependances and make `find_address`available to use in a terminal.
+
 ## Token
 *Optional*  
 
 This projects uses [Mapbox](http://mapbox.com) reverse-geocoding API to find an address from GPS coordinates. This API needs a *token*, which is hard-coded in the file `exif_address_finder/MAPBOX_TOKEN.py` and it should work quite well.  
-If you plan to use **find_address** quite often, please considere getting your own token [here](https://www.mapbox.com/studio/account/tokens) to prevent any usage restriction.
+If you plan to use `find_address` quite often, please considere getting your own token [here](https://www.mapbox.com/studio/account/tokens) to prevent any usage restriction.
 
 ## Usage
 
@@ -42,7 +44,7 @@ find_address --help
 
 
 ### Adding the EXIF Description tag
-The default behavior of **find_address** is to add the address to the *already-existing* EXIF description. If there is no description, the tag will be created.
+The default behavior of `find_address` is to add the address to the *already-existing* EXIF description. If there is no description, the tag will be created.
 
 **For 1 image:**  
 
