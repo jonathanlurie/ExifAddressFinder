@@ -5,8 +5,7 @@ Author      : Jonathan Lurie
 Email       : lurie.jo@gmail.com
 Version     : 0.1
 Licence     : MIT
-description :
-              Doc for exif fields: http://piexif.readthedocs.org/en/latest/
+description : The entry point to the library.
 '''
 
 import GeoToolbox
@@ -15,26 +14,15 @@ import piexif
 from IFD_KEYS_REFERENCE import *
 import exifWriter
 import os
-import argparse
-
-
-description ="""
-ExifAddressFinder adds the postal address in the EXIF Description field of your geo-tagged pictures. Made for a batch usage.
-
-Use the argument -replace to erase the former description and replace it with the address.
-By default (when -replace is not used), the address will come after the current description. In this case think about using a -prefix like a blank space, a \\n of a <br> markup as a separator between the current description and the address.
-
-ExifAddressFinder works with Mapbox geocoding to retrieve the address from the GPS coordinate. Meaning an Internet connection is needed.
-"""
 
 
 
-class ExifAddressFinder:
-    _geoToolbox = None
+class ExifAddressFinderManager:
+    _geotoolbox = None
 
 
     def __init__(self):
-        self._geoToolbox = GeoToolbox.GeoToolbox()
+        self._geotoolbox = GeoToolbox.GeoToolbox()
 
 
     # return a dictionnary {"lat": yy.yyy, "lon": xx.xxx}
@@ -77,7 +65,7 @@ class ExifAddressFinder:
     # return the address if found
     # returns None if not retrieve
     def _retrieveAddress(self, latitude, longitude):
-        address = self._geoToolbox.getAddress(latitude=latitude, longitude=longitude)
+        address = self._geotoolbox.getAddress(latitude=latitude, longitude=longitude)
 
         # if the address was well retrieve
         if(address["status"]):
@@ -110,32 +98,3 @@ class ExifAddressFinder:
         self._updateDescription(fileAddress, prefix + postalAddress + suffix, addToFormer)
 
         return 1
-
-
-def TEST01_ExifAddressFinder():
-    eaf = ExifAddressFinder()
-    #eaf.addAddressToImage("data/SD_2016-01-04T23-26-15.8025270.jpg")
-    eaf.addAddressToImage("data/_NIK8202.jpg")
-
-
-if __name__ == '__main__':
-    #TEST01_ExifAddressFinder()
-
-    parser = argparse.ArgumentParser(description=description)
-    parser.add_argument('-files', nargs='+', required=True, help='Image files to process')
-    parser.add_argument('-prefix', required=False, default='', help='Text to add before the address')
-    parser.add_argument('-suffix', required=False, default='', help='Text to add after the address')
-    parser.add_argument('-replace', action='store_false', required=False, help='Will erase the current description to write only the address')
-
-    args = parser.parse_args()
-
-    eaf = ExifAddressFinder()
-
-    counter = 1
-
-    for f in args.files:
-        print os.path.basename(f) + "... (" + str(counter) + "/" +  str(len(args.files)) + ")"
-        if(eaf.addAddressToImage(f, args.prefix, args.suffix, args.replace)):
-            print "\tDONE"
-
-        counter = counter + 1

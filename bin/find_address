@@ -1,0 +1,51 @@
+#!/usr/bin/env python
+
+'''
+Author      : Jonathan Lurie
+Email       : lurie.jo@gmail.com
+Version     : 0.1
+Licence     : MIT
+description :
+              Doc for exif fields: http://piexif.readthedocs.org/en/latest/
+'''
+
+import exif_address_finder as mod_EAF
+import os
+import argparse
+
+
+description ="""
+find_address adds the postal address to the EXIF Description field of your geo-tagged pictures. Made for a batch usage.
+
+Use the argument -replace to erase the former description and replace it with the address.
+By default (when -replace is not used), the address will come after the current description. In this case think about using a -prefix like a blank space, a \\n of a <br> markup as a separator between the current description and the address.
+
+find_address works with Mapbox geocoding to retrieve the address from the GPS coordinate. Meaning an Internet connection is needed.
+"""
+
+
+# dealing with app arguments
+parser = argparse.ArgumentParser(description=description)
+parser.add_argument('-files', nargs='+', required=True, help='Image files to process')
+parser.add_argument('-prefix', required=False, default='', help='Text to add before the address')
+parser.add_argument('-suffix', required=False, default='', help='Text to add after the address')
+parser.add_argument('-replace', action='store_false', required=False, help='Will erase the current description to write only the address')
+args = parser.parse_args()
+
+eaf = mod_EAF.ExifAddressFinderManager.ExifAddressFinderManager()
+
+counter = 1
+
+# for each image in argument, find the address
+for f in args.files:
+    print os.path.basename(f) + "... (" + str(counter) + "/" +  str(len(args.files)) + ")"
+
+    # test if file exists
+    if(not os.path.isfile(f)):
+        print("\tERROR: file not found.")
+        continue
+
+    if(eaf.addAddressToImage(f, args.prefix, args.suffix, args.replace)):
+        print "\tDONE"
+
+    counter = counter + 1

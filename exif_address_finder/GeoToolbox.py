@@ -5,14 +5,11 @@ Author      : Jonathan Lurie
 Email       : lurie.jo@gmail.com
 Version     : 0.1
 Licence     : MIT
-description :
-              Doc for exif fields: http://piexif.readthedocs.org/en/latest/
+description : Uses Mapbox library to reverse-geocode the GPS coordinates.
 '''
 
 
 from mapbox import Geocoder
-
-import codecs
 import sys
 import MAPBOX_TOKEN
 
@@ -45,10 +42,10 @@ class GeoToolbox:
         return fullAnswer
 
 
-def TEST01_GeoToolbox():
-    gtb = GeoToolbox()
-    print gtb.getAddress(latitude=33.280491, longitude=-116.433201)
-    print gtb.getAddress(latitude=43.599107, longitude=1.452454)
+#def TEST01_GeoToolbox():
+#    gtb = GeoToolbox()
+#    print gtb.getAddress(latitude=33.280491, longitude=-116.433201)
+#    print gtb.getAddress(latitude=43.599107, longitude=1.452454)
 
 #if __name__ == '__main__':
 #    TEST01_GeoToolbox()

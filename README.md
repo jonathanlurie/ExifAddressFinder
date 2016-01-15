@@ -1,6 +1,6 @@
 # ExifAddressFinder
 
-**ExifAddressFinder** adds the postal address in the EXIF Description tag of your geo-tagged pictures.
+The project **ExifAddressFinder** contains a executable named **find_address**. It adds the postal address in the EXIF Description tag of your geo-tagged pictures.
 
 Coded on OSX, supposed to work on other UNIX platforms and possibly on Windows if the right dependencies are installed.
 
@@ -19,31 +19,41 @@ Thrifty, 3255 University Ave, San Diego, California 92104, United States
 
 So far, it works only for jpg images. It could also work for Tiff, but this was not tested.
 
+## Installation
+
+Download the [master](https://github.com/jonathanlurie/ExifAddressFinder/archive/master.zip) and unzip-it somewhere and run:
+
+```
+cd ExifAddressFinder
+python setup.py install
+```
+
+## Token
+*Optional*  
+
+This projects uses [Mapbox](http://mapbox.com) reverse-geocoding API to find an address from GPS coordinates. This API needs a *token*, which is hard-coded in the file `exif_address_finder/MAPBOX_TOKEN.py` and it should work quite well.  
+If you plan to use **find_address** quite often, please considere getting your own token [here](https://www.mapbox.com/studio/account/tokens) to prevent any usage restriction.
+
 ## Usage
 
 ```shell
-ExifAddressFinder --help
+find_address --help
 ```
 
-If the file ExifAddressFinder is not executable, you need to chmod it:
-
-```shell
-chmod u+x ExifAddressFinder
-```
 
 ### Adding the EXIF Description tag
-The default behavior of **ExifAddressFinder** is to add the address to the *already-existing* EXIF description. If there is no description, the tag will be created.
+The default behavior of **find_address** is to add the address to the *already-existing* EXIF description. If there is no description, the tag will be created.
 
 **For 1 image:**  
 
 ```shell
-ExifAddressFinder -files /aFolder/image1.jpg
+find_address -files /aFolder/image1.jpg
 ```
 
 **For multiple images:**  
 
 ```shell
-ExifAddressFinder -files /aFolder/image1.jpg /aFolder/image2.jpg /aFolder/image3.jpg
+find_address -files /aFolder/image1.jpg /aFolder/image2.jpg /aFolder/image3.jpg
 ```
 
 ### Prefix and suffix
@@ -53,7 +63,7 @@ These are **optional**.
 It's more than possible you want to format this raw address with some text, or maybe with HTML markups if you are sure you will use the description tag for the web.
 
 ```shell
-ExifAddressFinder -prefix "(Hello, I am a prefix) " -suffix " (hello, I am a suffix)" -files /aFolder/image1.jpg
+find_address -prefix "(Hello, I am a prefix) " -suffix " (hello, I am a suffix)" -files /aFolder/image1.jpg
 ```
 
 If we come back to our *Example Case*, the description tag will be:  
@@ -71,15 +81,18 @@ This is **optional**.
 Case: you already have a description in your EXIF tag but you want to erase it, so that the EXIF tag contains only the address. Use the **-replace** option:  
 
 ```shell
-ExifAddressFinder -replace -files /aFolder/image1.jpg
+find_address -replace -files /aFolder/image1.jpg
 ```
 
 ## Dependencies
+
+Note: the following dependencies should be automatically downloaded/resolved during the installation process.
+
 - **Exifread**, for easy EXIF reading ([Pypi](https://pypi.python.org/pypi/ExifRead) or [Github](https://github.com/ianare/exif-py))
 - **Piexif**, for EXIF writing in pure Python ([Pypi](https://pypi.python.org/pypi/piexif/1.0.2) or [Github](https://github.com/hMatoba/Piexif))
 - **Mapbox**, for reverse geocoding ([Pypi](https://pypi.python.org/pypi/mapbox/0.6.0) or [Github](https://github.com/mapbox/mapbox-sdk-py))
 
-*Note:* Exifread is way easier to use and does not require to know the EXIF tag ID (or any other related black magic), unfortunately it is just for reading. Piexif is trickier to use but allows reading **and** writing, which is pretty cool for a pure Python package.  
+Exifread is way easier to use and does not require to know the EXIF tag ID (or any other related black magic), unfortunately it is just for reading. Piexif is trickier to use but allows reading **and** writing, which is pretty cool for a pure Python package.  
 For this reason the next time I will work on **ExifAddressFinder**, I will try to get rid of Exifread to use only Piexif.
 
 For those who want to know more about EXIF tags and black magic, [here](http://www.cipa.jp/std/documents/e/DC-008-2012_E.pdf) is the spec sheet I used.
